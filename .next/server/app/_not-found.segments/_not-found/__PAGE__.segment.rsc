@@ -1,0 +1,37 @@
+1:"$Sreact.fragment"
+2:"/_next/static/chunks/0ab3snqpd2kt-.js"
+3:"/_next/static/chunks/3k6n_hk2veeyr.js"
+4:I[82328,["$2","$3"],"default"]
+5:I[39756,["$2","$3"],"default"]
+6:I[37457,["$2","$3"],"default"]
+e:I[97367,["$2","$3"],"OutletBoundary"]
+f:"$Sreact.suspense"
+13:"ViewportBoundary"
+14:I[97367,["$2","$3"],"$13"]
+15:"MetadataBoundary"
+16:I[97367,["$2","$3"],"$15"]
+17:I[27201,["$2","$3"],"IconMark"]
+:HL["/_next/static/chunks/2_2k55g9af8vq.css","style"]
+8:X
+8:C
+9:X
+9:300
+9:C
+c:X
+c:C
+12:X
+12:C
+d:[["children",{"s":"__PAGE__","h":49314,"d":{"r":["$","$1","c",{"children":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:props:notFound:0:1:props:style","children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:props:notFound:0:1:props:children:props:children:1:props:style","children":404}],["$","div",null,{"style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:props:notFound:0:1:props:children:props:children:2:props:style","children":["$","h2",null,{"style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:props:notFound:0:1:props:children:props:children:2:props:children:props:style","children":"This page could not be found."}]}]]}]}]],null,["$","$Le",null,{"children":["$","$f",null,{"name":"Next.MetadataOutlet","children":"$@10"}]}]]}],"p":"$@11","v":"$12","s":"$9"}}]]
+a:[["children",{"s":"/_not-found","h":49250,"d":{"r":["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@b","v":"$c","s":"$9"},"c":"$Qd"}]]
+19:X
+19:C
+1c:X
+1c:C
+0:{"t":{"t":{"s":"","h":49234,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2_2k55g9af8vq.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/0ab3snqpd2kt-.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/3k6n_hk2veeyr.js","async":true}]],["$","html",null,{"lang":"pt-BR","data-scroll-behavior":"smooth","children":["$","body",null,{"children":["$","$L4",null,{"children":["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]}]}]}]]}],"p":"$@7","v":"$8","s":"$9"},"c":"$Qa"},"h":{"r":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L14",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L16",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Toque de Desejo | Seu prazer, seu segredo, tudo discreto"}],["$","meta","1",{"name":"description","content":"Boutique sensual e produtos íntimos premium com discrição total. Perfumes íntimos, lubrificantes, cosméticos sensuais e vibradores com sigilo absoluto."}],["$","meta","2",{"property":"og:title","content":"Toque de Desejo | Vitrine Sensual Discreta"}],["$","meta","3",{"property":"og:description","content":"Descubra sensações, explore desejos e encontre seus favoritos com toda a discrição que você merece."}],["$","meta","4",{"property":"og:url","content":"https://toquededesejo.vercel.app"}],["$","meta","5",{"property":"og:site_name","content":"Toque de Desejo"}],["$","meta","6",{"property":"og:locale","content":"pt_BR"}],["$","meta","7",{"property":"og:image","content":"https://toquededesejo.vercel.app/img/logo.jpg"}],["$","meta","8",{"property":"og:image:width","content":"800"}],["$","meta","9",{"property":"og:image:height","content":"800"}],["$","meta","10",{"property":"og:image:alt","content":"Toque de Desejo"}],["$","meta","11",{"property":"og:type","content":"website"}],["$","meta","12",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","13",{"name":"twitter:title","content":"Toque de Desejo | Seu prazer, seu segredo"}],["$","meta","14",{"name":"twitter:description","content":"Boutique sensual elegante com sigilo absoluto."}],["$","meta","15",{"name":"twitter:image","content":"https://toquededesejo.vercel.app/img/logo.jpg"}],["$","link","16",{"rel":"icon","href":"/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","link","17",{"rel":"icon","href":"/img/logo.jpg"}],["$","link","18",{"rel":"apple-touch-icon","href":"/img/logo.jpg"}],["$","$L17","19",{}]]}]}],null]}],null]}],"p":"$@18","v":"$19","s":"$9"}},"a":"$@1a","u":"$@1b","b":"9dsRaUPQ9vQ41kEjIHDMh","r":"$1c"}
+10:null
+1b:false
+1a:null
+b:"$undefined"
+7:"$undefined"
+18:"$undefined"
+11:"$undefined"

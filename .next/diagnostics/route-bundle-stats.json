@@ -1,0 +1,128 @@
+[
+  {
+    "route": "/gestao",
+    "firstLoadUncompressedJsBytes": 617715,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/3pekvagnvm9dn.js",
+      ".next/static/chunks/25-x792jf8xmb.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/admin",
+    "firstLoadUncompressedJsBytes": 567843,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/38lhn9h87ppcu.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/produto/[slug]",
+    "firstLoadUncompressedJsBytes": 565337,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/0n3i_xxw4t6ou.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/",
+    "firstLoadUncompressedJsBytes": 565085,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/2ecmm1d6f3lph.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/sobre",
+    "firstLoadUncompressedJsBytes": 548401,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/3__bwz_x20cs8.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/politica-de-privacidade",
+    "firstLoadUncompressedJsBytes": 547058,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/2b94_wiqmlat1.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/trocas-e-devolucoes",
+    "firstLoadUncompressedJsBytes": 546605,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/2tzc7v2z85gjg.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/termos-de-uso",
+    "firstLoadUncompressedJsBytes": 546530,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/41uk5y5u1bp4t.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  },
+  {
+    "route": "/_not-found",
+    "firstLoadUncompressedJsBytes": 543193,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0ab3snqpd2kt-.js",
+      ".next/static/chunks/3k6n_hk2veeyr.js",
+      ".next/static/chunks/1x6obpmlu1_c2.js",
+      ".next/static/chunks/06bs-nf19b2js.js",
+      ".next/static/chunks/2ki52vdnbo2ft.js",
+      ".next/static/chunks/3l_qmp-61z4yc.js",
+      ".next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    ]
+  }
+]

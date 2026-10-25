@@ -1,0 +1,41 @@
+{
+  "status": 200,
+  "headers": {
+    "link": "</img/rose-pinterest.png>; rel=preload; as=\"image\", </img/logo.jpg>; rel=preload; as=\"image\", </img/produtos/1.jpg>; rel=preload; as=\"image\"",
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/produto/layout,_N_T_/produto/[slug]/layout,_N_T_/produto/[slug]/page,_N_T_/produto/sedenta-por-conforto-gel-deslizante-com-glitter-50g"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/produto/$d$slug/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 49216,
+    "slots": {
+      "children": {
+        "hints": 49248,
+        "slots": {
+          "children": {
+            "hints": 49248,
+            "slots": {
+              "children": {
+                "hints": 49312,
+                "slots": null
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/e6b5d63dcba454c727954e1c32cf95b6ac8393841eba361a6142317a8ffe2dd7/$/produto/sedenta-por-conforto-gel-deslizante-com-glitter-50g",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/produto/[slug]/page"
+    },
+    "isFallback": false
+  }
+}

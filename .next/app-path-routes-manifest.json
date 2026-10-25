@@ -1,0 +1,13 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/page": "/admin",
+  "/favicon.ico/route": "/favicon.ico",
+  "/gestao/page": "/gestao",
+  "/page": "/",
+  "/politica-de-privacidade/page": "/politica-de-privacidade",
+  "/produto/[slug]/page": "/produto/[slug]",
+  "/sobre/page": "/sobre",
+  "/termos-de-uso/page": "/termos-de-uso",
+  "/trocas-e-devolucoes/page": "/trocas-e-devolucoes"
+}

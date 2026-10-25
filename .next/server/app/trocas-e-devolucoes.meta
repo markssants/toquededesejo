@@ -1,0 +1,36 @@
+{
+  "status": 200,
+  "headers": {
+    "link": "</img/rose-pinterest.png>; rel=preload; as=\"image\", </img/logo.jpg>; rel=preload; as=\"image\"",
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/trocas-e-devolucoes/layout,_N_T_/trocas-e-devolucoes/page,_N_T_/trocas-e-devolucoes"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/trocas-e-devolucoes/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 49216,
+    "slots": {
+      "children": {
+        "hints": 49248,
+        "slots": {
+          "children": {
+            "hints": 49312,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/49f3524a34175c696f6d1d33fc02fa66484064a0dccf15841c8221dc7ea580f2/$/trocas-e-devolucoes",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/trocas-e-devolucoes/page"
+    },
+    "isFallback": false
+  }
+}

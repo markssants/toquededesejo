@@ -19,7 +19,6 @@ import {
   LayoutDashboard,
   FolderGit2,
   Users,
-  Wrench,
   DollarSign,
   Package,
   BarChart3,
@@ -38,7 +37,6 @@ import {
   Clock,
   CheckCircle2,
   AlertTriangle,
-  Smartphone,
   Phone,
   Mail,
   MapPin,
@@ -145,9 +143,9 @@ export default function GestaoPage() {
       if (orderFilter !== "Todas") {
         if (orderFilter === "Aguardando" && o.status !== "Aguardando") return false;
         if (orderFilter === "Em análise" && o.status !== "Em análise") return false;
-        if (orderFilter === "Aguardando peça" && !o.status.includes("Aguardando")) return false;
-        if (orderFilter === "Em separação" && o.status !== "Em separação") return false;
-        if (orderFilter === "Pronto" && !o.status.includes("Pronto")) return false;
+        if (orderFilter === "Aguardando reposição" && !o.status.toLowerCase().includes("reposição") && !o.status.toLowerCase().includes("peça")) return false;
+        if (orderFilter === "Em separação" && !o.status.toLowerCase().includes("separação")) return false;
+        if (orderFilter === "Pronto p/ entrega" && !o.status.toLowerCase().includes("pronto")) return false;
         if (orderFilter === "Entregue" && o.status !== "Entregue") return false;
       }
       if (orderSearch.trim()) {
@@ -196,7 +194,7 @@ export default function GestaoPage() {
     if (!newOrder.customerName || !newOrder.mainProduct) return;
 
     const created = {
-      id: `OS-${Math.floor(2000 + Math.random() * 900)}`,
+      id: `PED-${Math.floor(2000 + Math.random() * 900)}`,
       customerName: newOrder.customerName.trim(),
       customerPhone: newOrder.customerPhone || "11999999999",
       customerCity: "São Paulo/SP",
@@ -224,7 +222,7 @@ export default function GestaoPage() {
       status: "Aguardando",
       notes: ""
     });
-    showToast(`Ordem ${created.id} criada com sucesso!`);
+    showToast(`Pedido ${created.id} criado com sucesso!`);
   };
 
   const handleSaveClient = (e) => {
@@ -276,20 +274,21 @@ export default function GestaoPage() {
 
   // Helper de cor do status
   const getStatusBadge = (status) => {
-    if (status === "Entregue") {
+    const s = (status || "").toLowerCase();
+    if (s.includes("entregue")) {
       return { dot: "#22c55e", bg: "rgba(34, 197, 94, 0.12)", color: "#4ade80", text: "• Entregue" };
     }
-    if (status.includes("Pronto")) {
+    if (s.includes("pronto")) {
       return { dot: "#10b981", bg: "rgba(16, 185, 129, 0.12)", color: "#34d399", text: "• Pronto p/ entrega" };
     }
-    if (status === "Em análise") {
+    if (s.includes("análise") || s.includes("analise")) {
       return { dot: "#38bdf8", bg: "rgba(56, 189, 248, 0.12)", color: "#38bdf8", text: "• Em análise" };
     }
-    if (status.includes("separação") || status.includes("reparo")) {
+    if (s.includes("separação") || s.includes("separacao") || s.includes("embalando")) {
       return { dot: "#a855f7", bg: "rgba(168, 85, 247, 0.12)", color: "#c084fc", text: "• Em separação" };
     }
-    if (status.includes("peça") || status.includes("reposição")) {
-      return { dot: "#f59e0b", bg: "rgba(245, 158, 11, 0.12)", color: "#fbbf24", text: "• Aguardando peça" };
+    if (s.includes("reposição") || s.includes("reposicao") || s.includes("peça") || s.includes("estoque")) {
+      return { dot: "#f59e0b", bg: "rgba(245, 158, 11, 0.12)", color: "#fbbf24", text: "• Aguardando reposição" };
     }
     return { dot: "#a1a1aa", bg: "rgba(161, 161, 170, 0.12)", color: "#d4d4d8", text: `• ${status}` };
   };
@@ -580,7 +579,7 @@ export default function GestaoPage() {
                     }}
                   >
                     <ShoppingBag size={15} />
-                    <span>Ordens de Serviço</span>
+                    <span>Pedidos & Entregas</span>
                   </button>
                 </div>
               )}
@@ -632,7 +631,7 @@ export default function GestaoPage() {
                     }}
                   >
                     <Package size={15} />
-                    <span>Estoque de Peças</span>
+                    <span>Estoque de Produtos</span>
                   </button>
 
                   <button
@@ -783,7 +782,7 @@ export default function GestaoPage() {
             <Search size={15} style={{ position: "absolute", left: "16px", top: "12px", color: "#71717a" }} />
             <input
               type="text"
-              placeholder="Buscar ordem, cliente ou produto..."
+              placeholder="Buscar pedido, cliente ou produto..."
               value={orderSearch}
               onChange={(e) => setOrderSearch(e.target.value)}
               style={{
@@ -912,7 +911,7 @@ export default function GestaoPage() {
                   }}
                 >
                   <Plus size={16} />
-                  <span>Nova ordem</span>
+                  <span>Novo pedido</span>
                 </button>
               </div>
 
@@ -933,7 +932,7 @@ export default function GestaoPage() {
                     Faturamento do mês
                   </div>
                   <div style={{ fontSize: "0.78rem", color: "#71717a" }}>
-                    33 ordens • +12% vs. período anterior
+                    33 pedidos • +12% vs. período anterior
                   </div>
                 </div>
 
@@ -941,7 +940,7 @@ export default function GestaoPage() {
                 <div style={{ background: "#15111c", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "22px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
                     <div style={{ width: "38px", height: "38px", borderRadius: "10px", background: "rgba(56, 189, 248, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#38bdf8" }}>
-                      <Wrench size={18} />
+                      <ShoppingBag size={18} />
                     </div>
                     <ArrowUpRight size={16} color="#71717a" />
                   </div>
@@ -949,7 +948,7 @@ export default function GestaoPage() {
                     5
                   </div>
                   <div style={{ fontSize: "0.88rem", color: "#d4d4d8", fontWeight: 600, marginBottom: "2px" }}>
-                    Ordens em aberto
+                    Pedidos em aberto
                   </div>
                   <div style={{ fontSize: "0.78rem", color: "#71717a" }}>
                     Em análise, separação ou aguardando
@@ -971,7 +970,7 @@ export default function GestaoPage() {
                     Prontos p/ entrega
                   </div>
                   <div style={{ fontSize: "0.78rem", color: "#71717a" }}>
-                    Aguardando retirada do cliente
+                    Aguardando envio discreto ou retirada
                   </div>
                 </div>
 
@@ -987,7 +986,7 @@ export default function GestaoPage() {
                     3
                   </div>
                   <div style={{ fontSize: "0.88rem", color: "#d4d4d8", fontWeight: 600, marginBottom: "2px" }}>
-                    Peças em baixa
+                    Produtos em baixa
                   </div>
                   <div style={{ fontSize: "0.78rem", color: "#71717a" }}>
                     Abaixo do estoque mínimo
@@ -1118,18 +1117,18 @@ export default function GestaoPage() {
                 </div>
               </div>
 
-              {/* Tabela de Ordens Ativas (Screenshot 3 - Inferior) */}
+              {/* Tabela de Pedidos Recentes */}
               <div style={{ background: "#15111c", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "24px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
                   <div>
-                    <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#fff" }}>Ordens ativas</h3>
-                    <span style={{ fontSize: "0.78rem", color: "#71717a" }}>Acompanhamento em tempo real</span>
+                    <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#fff" }}>Pedidos recentes</h3>
+                    <span style={{ fontSize: "0.78rem", color: "#71717a" }}>Acompanhamento de entregas em tempo real</span>
                   </div>
                   <button
                     onClick={() => setCurrentView("pedidos")}
                     style={{ background: "none", border: "none", color: "#e11d48", fontSize: "0.82rem", fontWeight: 600, cursor: "pointer" }}
                   >
-                    Ver todas →
+                    Ver todos →
                   </button>
                 </div>
 
@@ -1137,9 +1136,9 @@ export default function GestaoPage() {
                   <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
                     <thead>
                       <tr style={{ color: "#71717a", fontSize: "0.78rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
-                        <th style={{ padding: "12px 14px", fontWeight: 500 }}>Ordem</th>
+                        <th style={{ padding: "12px 14px", fontWeight: 500 }}>Pedido</th>
                         <th style={{ padding: "12px 14px", fontWeight: 500 }}>Cliente</th>
-                        <th style={{ padding: "12px 14px", fontWeight: 500 }}>Produto / Aparelho</th>
+                        <th style={{ padding: "12px 14px", fontWeight: 500 }}>Produto / Itens</th>
                         <th style={{ padding: "12px 14px", fontWeight: 500 }}>Prioridade</th>
                         <th style={{ padding: "12px 14px", fontWeight: 500 }}>Previsão</th>
                         <th style={{ padding: "12px 14px", fontWeight: 500, textAlign: "right" }}>Status</th>
@@ -1195,18 +1194,18 @@ export default function GestaoPage() {
           )}
 
           {/* ========================================================
-              VIEW 2: ORDENS DE SERVIÇO / PEDIDOS (SCREENSHOT 1)
+              VIEW 2: PEDIDOS & ENTREGAS (CENTRAL DE DESPACHO)
               ======================================================== */}
           {currentView === "pedidos" && (
             <div>
-              {/* Topo: Título + Botão Nova Ordem */}
+              {/* Topo: Título + Botão Novo Pedido */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "26px" }}>
                 <div>
                   <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-                    Ordens de Serviço
+                    Pedidos & Entregas
                   </h1>
                   <p style={{ color: "#a1a1aa", fontSize: "0.88rem" }}>
-                    Controle completo dos reparos, fotos e entregas
+                    Controle completo dos pedidos, embalagem discreta e entregas
                   </p>
                 </div>
 
@@ -1228,11 +1227,11 @@ export default function GestaoPage() {
                   }}
                 >
                   <Plus size={16} />
-                  <span>Nova ordem</span>
+                  <span>Novo pedido</span>
                 </button>
               </div>
 
-              {/* Barra de Filtro e Busca com Pílulas (Screenshot 1) */}
+              {/* Barra de Filtro e Busca com Pílulas */}
               <div
                 style={{
                   background: "#15111c",
@@ -1251,7 +1250,7 @@ export default function GestaoPage() {
                   <Search size={15} color="#71717a" />
                   <input
                     type="text"
-                    placeholder="Buscar por OS, cliente, aparelho ou IMEI..."
+                    placeholder="Buscar por pedido, cliente ou produto..."
                     value={orderSearch}
                     onChange={(e) => setOrderSearch(e.target.value)}
                     style={{
@@ -1267,7 +1266,7 @@ export default function GestaoPage() {
 
                 {/* Filtros em Pílula */}
                 <div style={{ display: "flex", gap: "6px", overflowX: "auto" }}>
-                  {["Todas", "Aguardando", "Em análise", "Aguardando peça", "Em reparo", "Pronto", "Entregue"].map((f) => {
+                  {["Todas", "Aguardando", "Em análise", "Aguardando reposição", "Em separação", "Pronto p/ entrega", "Entregue"].map((f) => {
                     const isSel = orderFilter === f;
                     return (
                       <button
@@ -1292,7 +1291,7 @@ export default function GestaoPage() {
                 </div>
               </div>
 
-              {/* Grid 2x3 de Cards de Ordens (Exatamente como Screenshot 1) */}
+              {/* Grid de Cards de Pedidos */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
                 {filteredOrders.map((ord) => {
                   const prio = getPriorityBadge(ord.priority);
@@ -1321,14 +1320,14 @@ export default function GestaoPage() {
                                 width: "36px",
                                 height: "36px",
                                 borderRadius: "10px",
-                                background: "rgba(59, 130, 246, 0.15)",
+                                background: "rgba(225, 29, 72, 0.15)",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                color: "#60a5fa"
+                                color: "#fb7185"
                               }}
                             >
-                              <Smartphone size={18} />
+                              <ShoppingBag size={18} />
                             </div>
                             <div>
                               <span style={{ fontSize: "0.75rem", color: "#71717a", fontWeight: 600, display: "block" }}>
@@ -1407,7 +1406,7 @@ export default function GestaoPage() {
                     Clientes
                   </h1>
                   <p style={{ color: "#a1a1aa", fontSize: "0.88rem" }}>
-                    {clients.length} clientes cadastrados na oficina
+                    {clients.length} clientes cadastrados na boutique
                   </p>
                 </div>
 
@@ -1523,7 +1522,7 @@ export default function GestaoPage() {
                       </div>
                     </div>
 
-                    {/* Rodapé: Total de Aparelhos / Pedidos e Total Gasto R$ */}
+                    {/* Rodapé: Total de Pedidos e Total Gasto R$ */}
                     <div
                       style={{
                         display: "flex",
@@ -1534,8 +1533,8 @@ export default function GestaoPage() {
                       }}
                     >
                       <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#a1a1aa", fontSize: "0.82rem" }}>
-                        <Smartphone size={14} style={{ color: "#71717a" }} />
-                        <span>{cli.ordersCount} aparelho(s)</span>
+                        <ShoppingBag size={14} style={{ color: "#e11d48" }} />
+                        <span>{cli.ordersCount} pedido(s)</span>
                       </div>
 
                       <strong style={{ fontSize: "1.05rem", color: "#fff" }}>
@@ -1549,18 +1548,18 @@ export default function GestaoPage() {
           )}
 
           {/* ========================================================
-              VIEW 4: ESTOQUE DE PEÇAS / PRODUTOS (SCREENSHOT 5)
+              VIEW 4: ESTOQUE DE PRODUTOS
               ======================================================== */}
           {currentView === "estoque" && (
             <div>
-              {/* Topo: Título + Botão Nova Peça */}
+              {/* Topo: Título + Botão Novo Produto */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "26px" }}>
                 <div>
                   <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-                    Estoque de Peças
+                    Estoque de Produtos
                   </h1>
                   <p style={{ color: "#a1a1aa", fontSize: "0.88rem" }}>
-                    Controle de peças, compatibilidade e reposição
+                    Controle de produtos sensuais, categorias e reposição
                   </p>
                 </div>
 
@@ -1581,11 +1580,11 @@ export default function GestaoPage() {
                   }}
                 >
                   <Plus size={16} />
-                  <span>Nova peça</span>
+                  <span>Novo produto</span>
                 </Link>
               </div>
 
-              {/* 4 Cards de Métricas do Estoque (Screenshot 5) */}
+              {/* 4 Cards de Métricas do Estoque */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: "18px", marginBottom: "26px" }}>
                 <div style={{ background: "#15111c", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "20px" }}>
                   <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(59, 130, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#60a5fa", marginBottom: "12px" }}>
@@ -1608,7 +1607,7 @@ export default function GestaoPage() {
                     <AlertTriangle size={17} />
                   </div>
                   <div style={{ fontSize: "1.7rem", fontWeight: 700, color: "#fff" }}>2</div>
-                  <div style={{ fontSize: "0.82rem", color: "#71717a" }}>Peças em baixa</div>
+                  <div style={{ fontSize: "0.82rem", color: "#71717a" }}>Produtos em baixa</div>
                 </div>
 
                 <div style={{ background: "#15111c", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "20px" }}>
@@ -1620,7 +1619,7 @@ export default function GestaoPage() {
                 </div>
               </div>
 
-              {/* Barra de Filtros em Pílula (Screenshot 5) */}
+              {/* Barra de Filtros em Pílula */}
               <div
                 style={{
                   background: "#15111c",
@@ -1639,7 +1638,7 @@ export default function GestaoPage() {
                   <Search size={15} color="#71717a" />
                   <input
                     type="text"
-                    placeholder="Buscar peça, SKU ou compatibilidade..."
+                    placeholder="Buscar produto, código ou categoria..."
                     value={stockSearch}
                     onChange={(e) => setStockSearch(e.target.value)}
                     style={{
@@ -1679,15 +1678,15 @@ export default function GestaoPage() {
                 </div>
               </div>
 
-              {/* Tabela de Estoque com Barra de Progresso (Screenshot 5) */}
+              {/* Tabela de Estoque com Barra de Progresso */}
               <div style={{ background: "#15111c", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", overflow: "hidden" }}>
                 <div style={{ overflowX: "auto" }}>
                   <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
                     <thead>
                       <tr style={{ color: "#71717a", fontSize: "0.78rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
-                        <th style={{ padding: "14px 18px", fontWeight: 500 }}>Peça / Produto</th>
-                        <th style={{ padding: "14px 18px", fontWeight: 500 }}>SKU</th>
-                        <th style={{ padding: "14px 18px", fontWeight: 500 }}>Compatível / Categoria</th>
+                        <th style={{ padding: "14px 18px", fontWeight: 500 }}>Produto / Marca</th>
+                        <th style={{ padding: "14px 18px", fontWeight: 500 }}>Código</th>
+                        <th style={{ padding: "14px 18px", fontWeight: 500 }}>Categoria</th>
                         <th style={{ padding: "14px 18px", fontWeight: 500 }}>Preço</th>
                         <th style={{ padding: "14px 18px", fontWeight: 500, width: "220px" }}>Estoque</th>
                         <th style={{ padding: "14px 18px", fontWeight: 500, textAlign: "center" }}>Nível</th>
@@ -1842,7 +1841,7 @@ export default function GestaoPage() {
                     <ShoppingBag size={17} />
                   </div>
                   <div style={{ fontSize: "1.7rem", fontWeight: 700, color: "#fff" }}>338</div>
-                  <div style={{ fontSize: "0.82rem", color: "#71717a" }}>Ordens concluídas</div>
+                  <div style={{ fontSize: "0.82rem", color: "#71717a" }}>Pedidos entregues</div>
                 </div>
 
                 <div style={{ background: "#15111c", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "22px" }}>
@@ -1916,7 +1915,7 @@ export default function GestaoPage() {
                 {/* Categorias Mais Rentáveis (Screenshot 4) */}
                 <div style={{ background: "#15111c", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "24px" }}>
                   <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-                    Serviços mais rentáveis
+                    Categorias mais rentáveis
                   </h3>
                   <span style={{ fontSize: "0.78rem", color: "#71717a", display: "block", marginBottom: "20px" }}>
                     Receita acumulada
@@ -1956,7 +1955,7 @@ export default function GestaoPage() {
                     <thead>
                       <tr style={{ color: "#71717a", fontSize: "0.78rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
                         <th style={{ padding: "12px 14px", fontWeight: 500 }}>Mês</th>
-                        <th style={{ padding: "12px 14px", fontWeight: 500 }}>Ordens</th>
+                        <th style={{ padding: "12px 14px", fontWeight: 500 }}>Pedidos</th>
                         <th style={{ padding: "12px 14px", fontWeight: 500 }}>Faturamento</th>
                         <th style={{ padding: "12px 14px", fontWeight: 500 }}>Custos</th>
                         <th style={{ padding: "12px 14px", fontWeight: 500 }}>Lucro</th>
@@ -2053,13 +2052,13 @@ export default function GestaoPage() {
       </div>
 
       {/* ========================================================
-          MODAL: NOVA ORDEM
+          MODAL: NOVO PEDIDO
           ======================================================== */}
       {isNewOrderOpen && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 99999, padding: "20px" }}>
           <div style={{ background: "#15111c", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "20px", width: "100%", maxWidth: "480px", padding: "28px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#fff" }}>Nova Ordem de Serviço</h3>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#fff" }}>Novo Pedido / Ordem de Entrega</h3>
               <button onClick={() => setIsNewOrderOpen(false)} style={{ background: "none", border: "none", color: "#a1a1aa", fontSize: "1.2rem", cursor: "pointer" }}>✕</button>
             </div>
 
@@ -2101,11 +2100,11 @@ export default function GestaoPage() {
               </div>
 
               <div>
-                <label style={{ fontSize: "0.78rem", color: "#a1a1aa", display: "block", marginBottom: "4px" }}>Produto / Aparelho *</label>
+                <label style={{ fontSize: "0.78rem", color: "#a1a1aa", display: "block", marginBottom: "4px" }}>Produtos / Itens do Pedido *</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Sedenta Molhada 50g"
+                  placeholder="Ex: Sedenta Molhada 50g + Óleo Tântrico"
                   value={newOrder.mainProduct}
                   onChange={(e) => setNewOrder({ ...newOrder, mainProduct: e.target.value })}
                   style={{ width: "100%", padding: "10px 14px", background: "#0c0a10", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", color: "#fff", fontSize: "0.85rem" }}
@@ -2113,10 +2112,10 @@ export default function GestaoPage() {
               </div>
 
               <div>
-                <label style={{ fontSize: "0.78rem", color: "#a1a1aa", display: "block", marginBottom: "4px" }}>Descrição / Defeito informado</label>
+                <label style={{ fontSize: "0.78rem", color: "#a1a1aa", display: "block", marginBottom: "4px" }}>Observações / Embalagem / Entrega</label>
                 <input
                   type="text"
-                  placeholder="Ex: Embalagem discreta sem menção externa"
+                  placeholder="Ex: Embalagem 100% neutra, entregar discretamente via motoboy"
                   value={newOrder.description}
                   onChange={(e) => setNewOrder({ ...newOrder, description: e.target.value })}
                   style={{ width: "100%", padding: "10px 14px", background: "#0c0a10", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", color: "#fff", fontSize: "0.85rem" }}
@@ -2146,7 +2145,7 @@ export default function GestaoPage() {
                   >
                     <option value="Aguardando">Aguardando</option>
                     <option value="Em análise">Em análise</option>
-                    <option value="Aguardando peça">Aguardando peça</option>
+                    <option value="Aguardando reposição">Aguardando reposição</option>
                     <option value="Em separação">Em separação</option>
                     <option value="Pronto p/ entrega">Pronto p/ entrega</option>
                     <option value="Entregue">Entregue</option>
@@ -2169,7 +2168,7 @@ export default function GestaoPage() {
                     cursor: "pointer"
                   }}
                 >
-                  Criar Ordem
+                  Salvar Pedido
                 </button>
                 <button
                   type="button"
