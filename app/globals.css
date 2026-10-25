@@ -1,0 +1,389 @@
+/* =========================================================
+   TOQUE DE DESEJO — DESIGN SYSTEM & LUXURY THEME
+   Paleta: Preto Profundo, Vermelho Rubi, Neon Red, Bordô, Champagne
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700;800&family=Great+Vibes&display=swap');
+
+:root {
+  /* Cores Principais */
+  --bg-main: #060508;
+  --bg-surface: #0c0a10;
+  --bg-card: #120e17;
+  --bg-card-hover: #191421;
+  --bg-glass: rgba(14, 11, 18, 0.78);
+  --bg-glass-strong: rgba(10, 8, 14, 0.92);
+
+  /* Acentos Vermelho Rubi & Neon */
+  --ruby-primary: #e11d48;
+  --ruby-glow: #ff0055;
+  --ruby-light: #fb7185;
+  --ruby-dark: #9f1239;
+  --bordo-deep: #400918;
+  --bordo-velvet: #2b0610;
+
+  /* Textos & Detalhes Elegantes */
+  --text-primary: #fff5f5;
+  --text-secondary: #c9bac3;
+  --text-muted: #8b7984;
+  --champagne: #f4e8dc;
+  --champagne-gold: #e2cbb2;
+
+  /* Bordas e Sombras */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-ruby: rgba(225, 29, 72, 0.35);
+  --border-ruby-strong: rgba(255, 0, 85, 0.7);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.65);
+  --shadow-ruby: 0 10px 30px -10px rgba(225, 29, 72, 0.45);
+  --glow-ruby: 0 0 25px rgba(225, 29, 72, 0.4);
+  --glow-neon: 0 0 45px rgba(255, 0, 85, 0.6);
+
+  /* Tipografia */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-script: 'Great Vibes', cursive;
+
+  /* Transições & Raios */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset Global */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  background-color: var(--bg-main);
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Background com iluminação cinematográfica sutil */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 600px;
+  background: radial-gradient(circle 800px at 50% -150px, rgba(225, 29, 72, 0.18), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Scrollbar Customizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #09080c;
+}
+::-webkit-scrollbar-thumb {
+  background: #2b0b14;
+  border-radius: 4px;
+  border: 1px solid rgba(225, 29, 72, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ruby-primary);
+}
+
+/* Utilitários de Layout */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tipografia */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-script {
+  font-family: var(--font-script);
+}
+
+.title-display {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.title-display .highlight {
+  color: #fff;
+  background: linear-gradient(135deg, #fff 0%, #ff6b8b 40%, var(--ruby-glow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 0, 85, 0.35);
+}
+
+.title-section {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.subtitle-section {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 400;
+  max-width: 620px;
+}
+
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-ruby {
+  background: rgba(225, 29, 72, 0.15);
+  color: #ff6088;
+  border: 1px solid rgba(225, 29, 72, 0.3);
+}
+
+.badge-champagne {
+  background: rgba(244, 232, 220, 0.1);
+  color: var(--champagne);
+  border: 1px solid rgba(244, 232, 220, 0.25);
+}
+
+.badge-wine {
+  background: var(--bordo-deep);
+  color: #ffd0dc;
+  border: 1px solid rgba(225, 29, 72, 0.2);
+}
+
+/* Botões Modernos de Luxo */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--ruby-primary) 0%, #c0103a 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 13px 28px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(225, 29, 72, 0.45);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--ruby-glow) 0%, var(--ruby-primary) 100%);
+  box-shadow: 0 8px 30px rgba(255, 0, 85, 0.6);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 13px 26px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-ruby);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #25d366 0%, #1ea952 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 14px 28px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 6px 25px rgba(37, 211, 102, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+}
+
+/* Glass Cards & Superfícies */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.glass-panel-glow {
+  background: linear-gradient(180deg, rgba(22, 17, 26, 0.8) 0%, rgba(12, 10, 16, 0.9) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-ruby);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-ruby);
+}
+
+/* Efeito de Brilho Suave */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Card de Produto */
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  background: var(--bg-card-hover);
+  border-color: var(--border-ruby);
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(225, 29, 72, 0.25);
+}
+
+.product-card .img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
+  background: #08070a;
+  overflow: hidden;
+}
+
+.product-card .img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover .img-wrapper img {
+  transform: scale(1.06);
+}
+
+/* Drawer & Modal Overlays */
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Input Styles */
+.input-luxury {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.input-luxury:focus {
+  border-color: var(--ruby-primary);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 15px rgba(225, 29, 72, 0.25);
+}
+
+.input-luxury::placeholder {
+  color: var(--text-muted);
+}
