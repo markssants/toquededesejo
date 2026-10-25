@@ -4,26 +4,32 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useCatalog } from "@/context/CatalogContext";
 import { useCart } from "@/context/CartContext";
-import { 
-  getProductBySlug, 
-  getRelatedProducts, 
-  formatCurrency, 
-  generateProductWhatsAppLink 
+import {
+  getProductBySlug,
+  getRelatedProducts,
+  formatCurrency,
+  generateProductWhatsAppLink
 } from "@/lib/products";
 import { STORE_CONFIG } from "@/lib/storeConfig";
 import ProductCard from "@/components/ProductCard";
-import { 
-  MessageCircle, 
-  ShoppingBag, 
-  ShieldCheck, 
-  Lock, 
-  CreditCard, 
-  Check, 
-  Sparkles, 
-  ArrowLeft, 
-  ZoomIn, 
+import {
+  MessageCircle,
+  ShoppingBag,
+  ShieldCheck,
+  Lock,
+  CreditCard,
+  Check,
+  Sparkles,
+  ArrowLeft,
+  ZoomIn,
   X,
-  Share2
+  Share2,
+  Truck,
+  Heart,
+  ChevronRight,
+  Info,
+  Layers,
+  Flame
 } from "lucide-react";
 
 export default function ProductDetailClient({ slug, fallbackProduct }) {
@@ -34,8 +40,9 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
   const [isZoomOpen, setIsZoomOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [activeTab, setActiveTab] = useState("descricao"); // "descricao", "beneficios", "modo_uso"
 
-  // Encontrar o produto atualizado no contexto de catálogo
+  // Encontrar o produto no contexto do catálogo
   const product = useMemo(() => {
     return getProductBySlug(slug, products) || fallbackProduct;
   }, [slug, products, fallbackProduct]);
@@ -49,7 +56,7 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
   if (!product) {
     return (
       <div className="container" style={{ padding: "100px 20px", textAlign: "center" }}>
-        <h2 style={{ fontSize: "2rem", color: "#fff", marginBottom: "16px" }}>
+        <h2 style={{ fontSize: "2rem", color: "#fff", marginBottom: "16px", fontFamily: "var(--font-serif)" }}>
           Produto não encontrado
         </h2>
         <p style={{ color: "var(--text-secondary)", marginBottom: "30px" }}>
@@ -66,6 +73,7 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
   const currentImage = images[activeImageIndex] || images[0];
   const hasDiscount = product.originalPrice && product.originalPrice > product.price;
   const pixPrice = product.price * (1 - STORE_CONFIG.pixDiscountPercent / 100);
+  const whatsappLink = generateProductWhatsAppLink(product, STORE_CONFIG.whatsappNumber);
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -75,12 +83,16 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
     }
   };
 
-  const whatsappLink = generateProductWhatsAppLink(product, STORE_CONFIG.whatsappNumber);
+  const handleQuantityChange = (delta) => {
+    setQuantity((prev) => Math.max(1, prev + delta));
+  };
 
   return (
-    <div style={{ padding: "40px 0 80px" }}>
+    <div style={{ padding: "32px 0 90px" }}>
       <div className="container">
-        {/* Navegação / Breadcrumb */}
+        {/* ========================================================
+            1. BREADCRUMB & VOLTAR (SUPER CLEAN)
+            ======================================================== */}
         <div
           style={{
             display: "flex",
@@ -88,35 +100,29 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: "14px",
-            marginBottom: "30px",
-            fontSize: "0.85rem",
-            color: "var(--text-secondary)"
+            marginBottom: "36px",
+            fontSize: "0.84rem"
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Link
-              href="/"
-              style={{ color: "var(--text-secondary)", transition: "color 0.2s" }}
-              onMouseEnter={(e) => (e.target.style.color = "#fff")}
-              onMouseLeave={(e) => (e.target.style.color = "var(--text-secondary)")}
-            >
+          {/* Trilha de Navegação */}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-muted)" }}>
+            <Link href="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>
               Início
             </Link>
-            <span>/</span>
+            <ChevronRight size={13} style={{ color: "rgba(255,255,255,0.2)" }} />
             <Link
               href={`/?categoria=${encodeURIComponent(product.category)}#produtos`}
-              style={{ color: "var(--text-secondary)", transition: "color 0.2s" }}
-              onMouseEnter={(e) => (e.target.style.color = "#fff")}
-              onMouseLeave={(e) => (e.target.style.color = "var(--text-secondary)")}
+              style={{ color: "var(--text-secondary)", textDecoration: "none" }}
             >
               {product.category}
             </Link>
-            <span>/</span>
-            <span style={{ color: "var(--champagne)", fontWeight: 500 }}>
+            <ChevronRight size={13} style={{ color: "rgba(255,255,255,0.2)" }} />
+            <span style={{ color: "#fff", fontWeight: 500, maxWidth: "260px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {product.name}
             </span>
           </div>
 
+          {/* Botões do Topo: Compartilhar + Voltar */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <button
               onClick={handleShare}
@@ -125,23 +131,16 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
                 alignItems: "center",
                 gap: "6px",
                 background: "rgba(255, 255, 255, 0.04)",
-                border: "1px solid var(--border-subtle)",
-                borderRadius: "var(--radius-full)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                borderRadius: "9999px",
                 padding: "6px 14px",
                 color: "var(--text-secondary)",
                 fontSize: "0.8rem",
+                cursor: "pointer",
                 transition: "all 0.2s ease"
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#fff";
-                e.currentTarget.style.borderColor = "var(--border-ruby)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--text-secondary)";
-                e.currentTarget.style.borderColor = "var(--border-subtle)";
-              }}
             >
-              {copiedLink ? <Check size={14} style={{ color: "#4ade80" }} /> : <Share2 size={14} />}
+              {copiedLink ? <Check size={13} color="#4ade80" /> : <Share2 size={13} />}
               <span>{copiedLink ? "Link copiado!" : "Compartilhar"}</span>
             </button>
 
@@ -152,40 +151,44 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
                 alignItems: "center",
                 gap: "6px",
                 color: "var(--ruby-light)",
-                fontSize: "0.85rem",
-                fontWeight: 600
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                textDecoration: "none"
               }}
             >
-              <ArrowLeft size={16} />
-              <span>Voltar para a vitrine</span>
+              <ArrowLeft size={14} />
+              <span>Voltar à vitrine</span>
             </Link>
           </div>
         </div>
 
-        {/* Grade Principal: Galeria + Detalhes */}
+        {/* ========================================================
+            2. GRADE PRINCIPAL: GALERIA (ESQUERDA) + COMPRA (DIREITA)
+            ======================================================== */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "48px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "54px",
             alignItems: "start",
-            marginBottom: "70px"
+            marginBottom: "80px"
           }}
         >
-          {/* GALERIA DE IMAGENS */}
-          <div>
+          {/* COLUNA ESQUERDA: GALERIA DE FOTOS */}
+          <div style={{ position: "sticky", top: "100px" }}>
+            {/* Foto Principal com Zoom */}
             <div
+              onClick={() => setIsZoomOpen(true)}
               style={{
                 position: "relative",
-                borderRadius: "var(--radius-lg)",
+                borderRadius: "24px",
                 overflow: "hidden",
-                border: "1px solid var(--border-ruby)",
-                background: "#08070a",
-                boxShadow: "0 15px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(225, 29, 72, 0.25)",
-                aspectRatio: "1 / 1.15",
-                cursor: "pointer"
+                border: "1px solid rgba(225, 29, 72, 0.35)",
+                background: "#0a080d",
+                boxShadow: "0 20px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(225, 29, 72, 0.2)",
+                aspectRatio: "1 / 1.12",
+                cursor: "zoom-in"
               }}
-              onClick={() => setIsZoomOpen(true)}
             >
               <img
                 src={currentImage}
@@ -194,11 +197,12 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
+                  display: "block",
                   transition: "transform 0.4s ease"
                 }}
               />
 
-              {/* Badges no Canto */}
+              {/* Badges no Topo Esquerdo */}
               <div
                 style={{
                   position: "absolute",
@@ -211,125 +215,142 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
                 }}
               >
                 {product.badge && (
-                  <span className="badge-tag badge-ruby">
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      padding: "5px 12px",
+                      borderRadius: "9999px",
+                      background: "linear-gradient(135deg, #e11d48 0%, #be123c 100%)",
+                      color: "#fff",
+                      fontSize: "0.74rem",
+                      fontWeight: 700,
+                      boxShadow: "0 4px 12px rgba(225, 29, 72, 0.4)",
+                      letterSpacing: "0.03em"
+                    }}
+                  >
                     <Sparkles size={11} />
                     {product.badge}
                   </span>
                 )}
                 {hasDiscount && (
-                  <span className="badge-tag badge-wine">
-                    Promoção Especial
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      padding: "5px 12px",
+                      borderRadius: "9999px",
+                      background: "rgba(43, 6, 16, 0.9)",
+                      border: "1px solid #e11d48",
+                      color: "#fecdd3",
+                      fontSize: "0.72rem",
+                      fontWeight: 600
+                    }}
+                  >
+                    Oferta Especial
                   </span>
                 )}
               </div>
 
-              {/* Botão de Ampliar */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsZoomOpen(true);
-                }}
-                aria-label="Ampliar foto"
+              {/* Botão de Ampliar no Canto Inferior Direito */}
+              <div
                 style={{
                   position: "absolute",
                   bottom: "16px",
                   right: "16px",
-                  width: "42px",
-                  height: "42px",
+                  width: "40px",
+                  height: "40px",
                   borderRadius: "50%",
-                  background: "rgba(10, 8, 14, 0.85)",
-                  backdropFilter: "blur(8px)",
-                  border: "1px solid var(--border-subtle)",
+                  background: "rgba(10, 8, 14, 0.82)",
+                  backdropFilter: "blur(6px)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
                   color: "#fff",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.6)",
-                  transition: "all 0.2s ease",
-                  zIndex: 2
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.6)"
                 }}
               >
-                <ZoomIn size={18} />
-              </button>
+                <ZoomIn size={17} />
+              </div>
             </div>
 
-            {/* Miniaturas se houver mais de uma */}
+            {/* Miniaturas se houver mais de uma foto */}
             {images.length > 1 && (
-              <div
-                style={{
-                  display: "flex",
-                  gap: "12px",
-                  marginTop: "16px",
-                  overflowX: "auto",
-                  paddingBottom: "8px"
-                }}
-              >
+              <div style={{ display: "flex", gap: "12px", marginTop: "16px", overflowX: "auto", paddingBottom: "4px" }}>
                 {images.map((imgUrl, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
                     style={{
-                      width: "74px",
-                      height: "74px",
-                      borderRadius: "var(--radius-sm)",
+                      width: "72px",
+                      height: "72px",
+                      borderRadius: "12px",
                       overflow: "hidden",
-                      border: idx === activeImageIndex ? "2px solid var(--ruby-primary)" : "1px solid var(--border-subtle)",
+                      border: idx === activeImageIndex ? "2px solid var(--ruby-primary)" : "1px solid rgba(255,255,255,0.1)",
                       background: "#000",
                       opacity: idx === activeImageIndex ? 1 : 0.6,
-                      transition: "all 0.2s ease",
+                      cursor: "pointer",
+                      padding: 0,
                       flexShrink: 0
                     }}
                   >
-                    <img
-                      src={imgUrl}
-                      alt={`${product.name} miniatura ${idx + 1}`}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
+                    <img src={imgUrl} alt="Miniatura" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* INFORMAÇÕES E COMPRA */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
+          {/* COLUNA DIREITA: INFORMAÇÕES HIERÁRQUICAS E COMPRA */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "26px" }}>
+            {/* Bloco 1: Linha de Rastreamento (Categoria / Marca / Volume) */}
             <div>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "10px",
-                  marginBottom: "8px"
+                  gap: "8px",
+                  fontSize: "0.78rem",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "var(--ruby-light)",
+                  marginBottom: "10px"
                 }}
               >
-                <span className="badge-tag badge-ruby" style={{ fontSize: "0.74rem" }}>
-                  {product.category}
-                </span>
+                <span>{product.category}</span>
                 {product.brand && (
-                  <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 500 }}>
-                    Marca: <strong style={{ color: "#fff" }}>{product.brand}</strong>
-                  </span>
+                  <>
+                    <span style={{ color: "rgba(255,255,255,0.2)" }}>/</span>
+                    <span style={{ color: "var(--champagne)" }}>{product.brand}</span>
+                  </>
                 )}
                 {product.volume && (
-                  <span style={{ fontSize: "0.85rem", color: "var(--champagne)" }}>
-                    • {product.volume}
-                  </span>
+                  <>
+                    <span style={{ color: "rgba(255,255,255,0.2)" }}>/</span>
+                    <span style={{ color: "var(--text-muted)" }}>{product.volume}</span>
+                  </>
                 )}
               </div>
 
+              {/* Título Principal de Alto Impacto */}
               <h1
                 style={{
                   fontFamily: "var(--font-serif)",
-                  fontSize: "clamp(1.8rem, 3.2vw, 2.4rem)",
+                  fontSize: "clamp(2rem, 3.2vw, 2.7rem)",
                   fontWeight: 700,
                   color: "#fff",
-                  lineHeight: 1.2,
-                  marginBottom: "12px"
+                  lineHeight: 1.18,
+                  marginBottom: "14px"
                 }}
               >
                 {product.name}
               </h1>
 
+              {/* Disponibilidade / Pronta Entrega */}
               <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.82rem" }}>
                 <span
                   style={{
@@ -341,30 +362,29 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
                   }}
                 />
                 <span style={{ color: product.stock > 0 ? "#4ade80" : "#f87171", fontWeight: 500 }}>
-                  {product.stock > 0 ? `Disponível em estoque (${product.stock} unidades)` : "Produto indisponível temporariamente"}
+                  {product.stock > 0 ? "Em estoque para envio imediato" : "Produto esgotado"}
                 </span>
-                {product.id && (
-                  <span style={{ color: "var(--text-muted)", marginLeft: "auto", fontSize: "0.75rem" }}>
-                    Cód: {product.id}
-                  </span>
-                )}
+                <span style={{ color: "var(--text-muted)", marginLeft: "auto", fontSize: "0.75rem" }}>
+                  REF: {product.slug?.slice(0, 14).toUpperCase()}
+                </span>
               </div>
             </div>
 
-            {/* Preço */}
+            {/* Bloco 2: Preço & Formas de Pagamento (Limpo e de Fácil Identificação) */}
             <div
-              className="glass-panel"
               style={{
-                padding: "20px 24px",
-                border: "1px solid var(--border-ruby)",
-                background: "linear-gradient(135deg, rgba(25, 17, 30, 0.7) 0%, rgba(14, 11, 18, 0.85) 100%)"
+                background: "linear-gradient(135deg, rgba(25, 17, 30, 0.6) 0%, rgba(14, 11, 18, 0.8) 100%)",
+                border: "1px solid rgba(225, 29, 72, 0.3)",
+                borderRadius: "18px",
+                padding: "22px 26px",
+                boxShadow: "0 8px 30px rgba(0, 0, 0, 0.4)"
               }}
             >
-              <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "4px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "14px", marginBottom: "8px" }}>
                 {hasDiscount && (
                   <span
                     style={{
-                      fontSize: "1rem",
+                      fontSize: "1.1rem",
                       color: "var(--text-muted)",
                       textDecoration: "line-through"
                     }}
@@ -372,184 +392,313 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
                     {formatCurrency(product.originalPrice)}
                   </span>
                 )}
+                {/* Preço Principal */}
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "2.1rem",
-                    fontWeight: 700,
-                    color: "#fff"
+                    fontSize: "2.5rem",
+                    fontWeight: 800,
+                    color: "#fff",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1
                   }}
                 >
                   {formatCurrency(product.price)}
                 </span>
               </div>
 
+              {/* Destaque do Desconto no Pix */}
               <div
                 style={{
-                  fontSize: "0.92rem",
-                  color: "#4ade80",
-                  fontWeight: 600,
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
-                  gap: "6px"
+                  gap: "8px",
+                  padding: "5px 12px",
+                  borderRadius: "8px",
+                  background: "rgba(34, 197, 94, 0.12)",
+                  border: "1px solid rgba(34, 197, 94, 0.3)",
+                  marginBottom: "8px"
                 }}
               >
-                <span>No Pix ({STORE_CONFIG.pixDiscountPercent}% de desconto):</span>
-                <span style={{ fontSize: "1.1rem" }}>{formatCurrency(pixPrice)}</span>
+                <span style={{ color: "#4ade80", fontWeight: 700, fontSize: "1.15rem" }}>
+                  {formatCurrency(pixPrice)}
+                </span>
+                <span style={{ color: "#86efac", fontSize: "0.8rem", fontWeight: 600 }}>
+                  no Pix (-{STORE_CONFIG.pixDiscountPercent}% OFF)
+                </span>
               </div>
 
-              <div style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginTop: "6px" }}>
+              {/* Parcelamento no Cartão */}
+              <div style={{ color: "var(--text-secondary)", fontSize: "0.84rem" }}>
                 💳 Ou em até <strong>{STORE_CONFIG.maxInstallments}x</strong> no cartão de crédito
               </div>
             </div>
 
-            {/* Ações de Compra */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {/* Bloco 3: Seletor de Quantidade e Botões de CTA (Destaque Visual) */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "flex", gap: "12px", alignItems: "stretch" }}>
+                {/* Stepper de Quantidade */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    background: "rgba(255, 255, 255, 0.04)",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    borderRadius: "9999px",
+                    padding: "4px 8px"
+                  }}
+                >
+                  <button
+                    onClick={() => handleQuantityChange(-1)}
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "50%",
+                      background: "transparent",
+                      border: "none",
+                      color: "#fff",
+                      fontSize: "1.2rem",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                    title="Diminuir quantidade"
+                  >
+                    -
+                  </button>
+
+                  <span style={{ minWidth: "32px", textAlign: "center", fontWeight: 700, fontSize: "1rem", color: "#fff" }}>
+                    {quantity}
+                  </span>
+
+                  <button
+                    onClick={() => handleQuantityChange(1)}
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "50%",
+                      background: "transparent",
+                      border: "none",
+                      color: "#fff",
+                      fontSize: "1.2rem",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                    title="Aumentar quantidade"
+                  >
+                    +
+                  </button>
+                </div>
+
+                {/* Botão Principal: Adicionar à Sacola */}
+                <button
+                  onClick={() => addToCart(product, quantity)}
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "10px",
+                    padding: "16px 28px",
+                    borderRadius: "9999px",
+                    background: "linear-gradient(135deg, #ff0055 0%, #e11d48 50%, #9f1239 100%)",
+                    color: "#fff",
+                    border: "none",
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    boxShadow: "0 8px 25px rgba(225, 29, 72, 0.5)",
+                    transition: "all 0.2s ease"
+                  }}
+                >
+                  <ShoppingBag size={20} />
+                  <span>Adicionar à Sacola</span>
+                </button>
+              </div>
+
+              {/* Botão Secundário: Comprar pelo WhatsApp */}
               <a
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-whatsapp"
                 style={{
-                  padding: "16px 28px",
-                  fontSize: "1.05rem",
-                  width: "100%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "10px"
+                  gap: "10px",
+                  padding: "15px 24px",
+                  borderRadius: "9999px",
+                  background: "rgba(37, 211, 102, 0.12)",
+                  border: "1px solid rgba(37, 211, 102, 0.35)",
+                  color: "#4ade80",
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  transition: "all 0.2s ease"
                 }}
               >
-                <MessageCircle size={22} />
-                <span>Comprar pelo WhatsApp com Discrição</span>
+                <MessageCircle size={19} />
+                <span>Comprar direto pelo WhatsApp</span>
               </a>
-
-              <button
-                onClick={() => addToCart(product, quantity)}
-                className="btn-primary"
-                style={{
-                  padding: "15px 28px",
-                  fontSize: "0.98rem",
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "10px"
-                }}
-              >
-                <ShoppingBag size={20} />
-                <span>Adicionar à Sacola de Compras</span>
-              </button>
-
-              <p
-                style={{
-                  fontSize: "0.78rem",
-                  color: "var(--text-muted)",
-                  textAlign: "center",
-                  lineHeight: 1.4
-                }}
-              >
-                ℹ️ A compra é finalizada via atendimento humanizado com total sigilo. Não solicitamos dados bancários abertos no site.
-              </p>
             </div>
 
-            {/* Benefícios de Sigilo */}
+            {/* Bloco 4: Faixa de Garantias de Sigilo (3 Colunas Horizontais Limpas) */}
             <div
               style={{
-                borderRadius: "var(--radius-md)",
-                background: "rgba(255, 255, 255, 0.03)",
-                border: "1px solid var(--border-subtle)",
-                padding: "18px 20px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px"
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "12px",
+                padding: "16px",
+                borderRadius: "16px",
+                background: "rgba(255, 255, 255, 0.02)",
+                border: "1px solid rgba(255, 255, 255, 0.06)",
+                textAlign: "center"
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <Lock size={18} style={{ color: "var(--ruby-light)", flexShrink: 0 }} />
-                <span style={{ fontSize: "0.85rem", color: "var(--champagne)" }}>
-                  <strong>Embalagem 100% Descaracterizada:</strong> Caixa sem nomes, adesivos ou menção à sex shop.
-                </span>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+                <Lock size={18} style={{ color: "var(--ruby-light)" }} />
+                <span style={{ fontSize: "0.76rem", fontWeight: 600, color: "#fff" }}>Pacote 100% Neutro</span>
+                <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>Sem menção a sex shop</span>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <CreditCard size={18} style={{ color: "var(--ruby-light)", flexShrink: 0 }} />
-                <span style={{ fontSize: "0.85rem", color: "var(--champagne)" }}>
-                  <strong>Sigilo na Fatura:</strong> Lançamento discreto no cartão de crédito.
-                </span>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+                <CreditCard size={18} style={{ color: "var(--ruby-light)" }} />
+                <span style={{ fontSize: "0.76rem", fontWeight: 600, color: "#fff" }}>Fatura Discreta</span>
+                <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>Nome neutro no extrato</span>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <ShieldCheck size={18} style={{ color: "var(--ruby-light)", flexShrink: 0 }} />
-                <span style={{ fontSize: "0.85rem", color: "var(--champagne)" }}>
-                  <strong>Atendimento Exclusivo:</strong> Dúvidas sanadas com respeito, elegância e discrição.
-                </span>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+                <ShieldCheck size={18} style={{ color: "var(--ruby-light)" }} />
+                <span style={{ fontSize: "0.76rem", fontWeight: 600, color: "#fff" }}>Sigilo Absoluto</span>
+                <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>Atendimento respeitoso</span>
               </div>
             </div>
 
-            {/* Descrição e Benefícios */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px", paddingTop: "10px" }}>
-              <div>
-                <h3 style={{ fontSize: "1.1rem", fontWeight: 600, color: "#fff", marginBottom: "8px" }}>
-                  Sobre este produto
-                </h3>
-                <p style={{ fontSize: "0.92rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>
-                  {product.fullDescription || product.shortDescription}
-                </p>
+            {/* Bloco 5: Abas Interativas de Conteúdo (Elimina o amontoado de texto!) */}
+            <div style={{ marginTop: "10px" }}>
+              {/* Botões de Seleção da Aba */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                  paddingBottom: "10px",
+                  marginBottom: "18px"
+                }}
+              >
+                {[
+                  { id: "descricao", label: "Sobre o Produto", icon: Info },
+                  { id: "beneficios", label: "Destaques & Benefícios", icon: Sparkles },
+                  { id: "modo_uso", label: "Modo de Uso", icon: Layers }
+                ].map((tab) => {
+                  const isActive = activeTab === tab.id;
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "8px 16px",
+                        borderRadius: "9999px",
+                        background: isActive ? "rgba(225, 29, 72, 0.18)" : "transparent",
+                        border: isActive ? "1px solid var(--ruby-primary)" : "1px solid transparent",
+                        color: isActive ? "#fff" : "var(--text-secondary)",
+                        fontSize: "0.84rem",
+                        fontWeight: isActive ? 600 : 500,
+                        cursor: "pointer",
+                        transition: "all 0.2s ease"
+                      }}
+                    >
+                      <Icon size={14} style={{ color: isActive ? "var(--ruby-light)" : "inherit" }} />
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                })}
               </div>
 
-              {product.benefits && product.benefits.length > 0 && (
-                <div>
-                  <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--champagne)", marginBottom: "10px" }}>
-                    Destaques & Benefícios:
-                  </h4>
-                  <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
-                    {product.benefits.map((benefit, i) => (
-                      <li key={i} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.88rem", color: "var(--text-secondary)" }}>
+              {/* Conteúdo da Aba Ativa */}
+              <div style={{ minHeight: "140px" }}>
+                {activeTab === "descricao" && (
+                  <p style={{ fontSize: "0.94rem", color: "var(--text-secondary)", lineHeight: 1.75, margin: 0 }}>
+                    {product.fullDescription || product.shortDescription}
+                  </p>
+                )}
+
+                {activeTab === "beneficios" && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {product.benefits && product.benefits.length > 0 ? (
+                      product.benefits.map((benefit, i) => (
                         <div
+                          key={i}
                           style={{
-                            width: "18px",
-                            height: "18px",
-                            borderRadius: "50%",
-                            background: "rgba(225, 29, 72, 0.15)",
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "center",
-                            color: "var(--ruby-light)",
-                            flexShrink: 0
+                            gap: "10px",
+                            padding: "10px 14px",
+                            borderRadius: "10px",
+                            background: "rgba(255, 255, 255, 0.02)",
+                            border: "1px solid rgba(255, 255, 255, 0.05)",
+                            fontSize: "0.88rem",
+                            color: "#fff"
                           }}
                         >
-                          <Check size={12} />
+                          <div
+                            style={{
+                              width: "20px",
+                              height: "20px",
+                              borderRadius: "50%",
+                              background: "rgba(34, 197, 94, 0.15)",
+                              color: "#4ade80",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0
+                            }}
+                          >
+                            <Check size={12} />
+                          </div>
+                          <span>{benefit}</span>
                         </div>
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                      ))
+                    ) : (
+                      <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                        Produto formulado com alto padrão de qualidade para máximo conforto.
+                      </p>
+                    )}
+                  </div>
+                )}
 
-              {product.usageInstructions && (
-                <div
-                  style={{
-                    padding: "16px",
-                    borderRadius: "var(--radius-md)",
-                    background: "rgba(225, 29, 72, 0.05)",
-                    border: "1px solid rgba(225, 29, 72, 0.2)"
-                  }}
-                >
-                  <h4 style={{ fontSize: "0.92rem", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>
-                    Modo de Uso & Cuidados:
-                  </h4>
-                  <p style={{ fontSize: "0.86rem", color: "var(--text-secondary)", lineHeight: 1.55 }}>
-                    {product.usageInstructions}
-                  </p>
-                </div>
-              )}
+                {activeTab === "modo_uso" && (
+                  <div
+                    style={{
+                      padding: "18px 20px",
+                      borderRadius: "14px",
+                      background: "rgba(225, 29, 72, 0.06)",
+                      border: "1px solid rgba(225, 29, 72, 0.2)"
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                      <Flame size={16} style={{ color: "var(--ruby-light)" }} />
+                      <strong style={{ color: "#fff", fontSize: "0.92rem" }}>Como aproveitar ao máximo:</strong>
+                    </div>
+                    <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: 1.65, margin: 0 }}>
+                      {product.usageInstructions || "Aplique a quantidade desejada suavemente sobre a região pretendida e massageie conforme a preferência."}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* PRODUTOS RELACIONADOS */}
+        {/* ========================================================
+            3. PRODUTOS RELACIONADOS (VITRINE INFERIOR)
+            ======================================================== */}
         {related.length > 0 && (
           <div
             style={{
@@ -581,10 +730,11 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
                 style={{
                   color: "var(--ruby-light)",
                   fontWeight: 600,
-                  fontSize: "0.9rem",
+                  fontSize: "0.88rem",
                   display: "flex",
                   alignItems: "center",
-                  gap: "6px"
+                  gap: "6px",
+                  textDecoration: "none"
                 }}
               >
                 <span>Ver toda a vitrine</span>
@@ -607,14 +757,16 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
         )}
       </div>
 
-      {/* MODAL DE ZOOM */}
+      {/* ========================================================
+          MODAL DE ZOOM EM TELA CHEIA
+          ======================================================== */}
       {isZoomOpen && (
         <div
           onClick={() => setIsZoomOpen(false)}
           style={{
             position: "fixed",
             inset: 0,
-            zIndex: 10000,
+            zIndex: 100000,
             backgroundColor: "rgba(0, 0, 0, 0.95)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
@@ -635,11 +787,13 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
               height: "48px",
               borderRadius: "50%",
               background: "rgba(255, 255, 255, 0.1)",
+              border: "none",
               color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              zIndex: 10001
+              cursor: "pointer",
+              zIndex: 100001
             }}
           >
             <X size={24} />
@@ -653,10 +807,10 @@ export default function ProductDetailClient({ slug, fallbackProduct }) {
               maxWidth: "90vw",
               maxHeight: "85vh",
               objectFit: "contain",
-              borderRadius: "var(--radius-md)",
-              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.9)"
+              borderRadius: "16px",
+              boxShadow: "0 25px 60px rgba(0, 0, 0, 0.9)"
             }}
-          />
+          ></img>
         </div>
       )}
     </div>
